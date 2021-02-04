@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+	{{>nav}}
+
+	<div class="main">
+
+
+
+		{{#each details}}
+		<div class="content" >
+			<a href="/watch/{{this.id}}" class="link">
+				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
+				<p class="title">{{this.title}}</p>
+			</a>
+		</div>
+		{{/each}}
+
+	</div>
+</body>
+</html>

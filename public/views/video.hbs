@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/video_main.css">
+   
+</head>
+<body>
+
+	{{>nav}}
+	<div class="main">
+		<div class="video">
+			<video controls="controls"  autoplay="autoplay" poster="/poster/{{poster}}">
+				<source src="/video/{{src}}" type="video/{{ext}}">
+			</video>
+		</div>
+
+		<div class="title">
+			<p>{{title}}</p>
+		</div>
+
+		<div class="des">
+			<p>{{des}}</p>
+		</div>
+	</div>
+
+
+</body>
+</html>

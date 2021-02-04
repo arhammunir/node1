@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="../css/detail.css">
+</head>
+<body>
+
+	<form method="POST" action="/upload_details" enctype="multipart/form-data">
+
+
+		<input type="text" name="id" value="{{id}}" readonly="readonly" class="input">
+		<input type="file" name="file" accept="image/*"  class="choose">
+		<input type="text" name="title" class="input" placeholder="write name here..">
+		<label for="movie">
+		 MOVIE: <input type="radio" name="choose" id="movie" value="movie"></label>
+		
+		<label for="tv-show">
+		 TV_SHOW: <input type="radio" name="choose" id="tv-show" value="tv-show"></label>
+
+		 <label for="web-series">
+		 WEB-SERIES: <input type="radio" name="choose" id="web-series" value="web-series"></label>
+
+
+		<input type="text" name="language" placeholder="put language here.." class="input">
+		<input type="tex" name="description" placeholder="write description here...." class="des">
+		<input type="submit" value="UPLOAD" class="btn">
+	</form>
+
+</body>
+</html>

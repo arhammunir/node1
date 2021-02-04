@@ -1,0 +1,35 @@
+*{
+	margin: none;
+	padding: none;
+	box-sizing: border-box;
+}
+
+.nav{
+	border: 1px solid black;
+	width: 100%;
+	height: 10vh;
+}
+
+.head{
+	display: inline-block;
+	border: 1px solid purple;
+	height: 10vh;
+}
+
+.head>.heading{
+	color: red;
+	font-size: 4vw;
+	font-family: "AGENCY FB";
+	font-weight: bold;
+	margin: -2% auto;
+}
+
+.options{
+	border: 1px solid blue;
+	display: inline-block;
+}
+
+.search{
+	display: inline-block;
+	border: 1px solid lightblue;
+}
