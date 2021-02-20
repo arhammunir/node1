@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT</title>
+
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/contact.css">
+
+
+</head>
+<body>
+
+	{{>nav}}
+
+
+<center>
+	<div class="main">
+		<div class="contact">
+			<form action="/contact" method="post">
+				<input type="email" name="email" placeholder="enter your email....." class="input_email" required="required">
+				<input type="hidden" name="to" readonly="readonly" disabled="disabled">
+				<input type="hidden" name="subject" value="{{sub}}" readonly="readonly" disabled="disabled">
+				<input type="text" name="message" placeholder="type your message...." class="input_message" required="required">
+				<input type="submit" value="SEND" class="input_btn">
+			</form>
+		</div>
+	</div>
+</center>s
+
+
+
+
+</body>
+</html>

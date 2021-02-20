@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETFLIX</title>
+
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/main_search.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+
+	{{>nav}}
+	{{>search}}
+
+	<div class="main">
+
+		<div class="div">
+
+
+	<h1 style="color: white;">{{search.length}} Result Found</h1>
+	
+		{{#each search}}
+		<div class="content" >
+			<a href="/watch/{{this.id}}" class="link">
+				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
+				<p class="title">{{this.title}}</p>
+			</a>
+		</div>
+		{{/each}}
+
+
+
+
+
+	</div>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <script type="text/javascript" src="../js/autocomplete.js"></script>
+</body>
+</html>

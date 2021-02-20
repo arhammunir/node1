@@ -7,17 +7,30 @@ body{
 	width: 100%;
 	height: auto;
 	margin: 10% auto;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
 }
-
+.div{
+	margin: 5% auto;
+}
+.div>h1{
+	font-size: 3vw;
+	font-family: "AGENCY FB";
+	margin-left: 1vw;
+}
+.div_content{
+	width: 95%;
+	margin-left: 2.5%;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
 .content{
+
 	display: inline-block;
-	width: 280px;
+	width: 180px;
 	height: 180px;
-	margin: .5% 1.5%;
+	margin: .5% 1%;
 	transition: all .2s ease;
 	background-color:  black;
 	border: 2px solid rgb(45, 45, 45);
@@ -37,7 +50,7 @@ body{
 
 .title{
 	font-family: "AGENCY FB";
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	margin: auto 5%;
 	font-weight: bold;
 	color: white;
@@ -49,4 +62,19 @@ body{
 }
 .content:hover>.img{
 	width: 90%;
+}
+
+@media screen and (max-width: 500px){
+	.content{
+		width: 90vw;
+		height: auto;
+		margin: 2% auto;
+	}
+	.img{
+		height: 20vh;
+	}
+}
+
+h1{
+	color: white;
 }

@@ -10,7 +10,10 @@ var port= process.env.PORT || 2000;
 var t_dir= path.join(__dirname, "./public/views");
 var static_path= path.join(__dirname, "./public/");
 var partials_path= path.join(__dirname, "./public/partials");
-
+var http=require("http");
+var server= http.createServer();
+var mailer= require("nodemailer");
+var autocomplete= require("autocompleter");
 
 
 try{
@@ -27,9 +30,190 @@ app.set("view engine", "hbs")
 app.set("views", t_dir);
 hbs.registerPartials(partials_path);
 
+
+app.get("/", (req, res)=>{
+	var main= async function(){
+		var movie_data= await streamData_image.find({choose: "movie"}).limit(20).sort({date: -1});
+		var web_series= await streamData_image.find({choose: "web-series"}).limit(20).sort({date: -1});
+		var tv_show= await streamData_image.find({choose: "tv-show"}).limit(20).sort({date: -1});
+		res.render("index", {
+			movie: movie_data,
+			web: web_series,
+			tv: tv_show
+			})
+	};
+	main();
+});
+
+
+
+app.get("/movie", (req, res)=>{
+	var find= async function(){
+		try{
+			var data= await streamData_image.find({choose: "movie"})
+			res.render("specific", {details: data})	
+		}
+		catch{
+			(e)=>{console.log(e)}
+		}
+	};
+	find();
+})
+
+
+
+app.get("/tv-show", (req, res)=>{
+	var find= async function(){
+		try{
+			var data= await streamData_image.find({choose: "tv-show"})
+			res.render("specific", {details: data})
+		}
+		catch{
+			(e)=>{console.log(e)}
+		}
+	};
+	find();
+})
+
+
+
+app.get("/web-series", (req, res)=>{
+	var find= async function(){
+		try{
+			var data= await streamData_image.find({choose: "web-series"})
+			res.render("specific", {details: data})
+		}
+		catch{
+			(e)=>{console.log(e)}
+		}
+	};
+	find();
+})
+
+
 app.get("/upload", (req, res)=>{
 	res.render("upload")
 })
+
+
+
+app.get("/about", (req, res)=>{
+	res.render("about")
+})
+
+
+
+app.get("/contact/:message", (req, res)=>{
+	res.render("contact", {sub: req.params.message})
+})
+
+
+app.post("/contact", (req, res)=>{
+	var transporter= mailer.createTransport({
+		service: "gmail",
+		auth: {
+			user:process.env.EMAIL,
+			pass:process.env.PASS
+		}
+	});
+	var body={
+		from:req.body.email,
+		to:process.env.EMAIL,
+		subject: req.body.message,
+		html: `<p>req.body.input_message</p>`
+	}
+	transporter.sendMail(body, (err, result)=>{
+		if(err){
+			return(err)
+		}
+		else{
+			console.log("MESSAGE SENT SUCCESSFULLY");
+		}
+	})
+	res.render("contact")
+})
+
+
+
+app.get("/search", (req, res)=>{
+	var f= async function(){
+		try{
+		var query= req.query.search;
+		var q= query.toLowerCase();
+		var data_title= await streamData_image.find({title: {$regex: q}})
+		res.render("search", {search: data_title})
+
+		}catch{
+			(e)=>{console.log(e)}
+			res.send("SOME ERROR IS OCCURED")
+		}
+		
+	};
+	f();
+})
+
+
+
+app.get("/autocomplete", (req, res)=>{
+
+	var regex = new RegExp(req.query["term"], 'i');
+	var db_data = streamData_image.find({title: {$regex: regex}}).limit(10);
+
+	db_data.exec(function(err, data){
+		var result = [];
+		if(!err){
+			if(data && data.length && data.length>0){
+				data.forEach(user=>{
+					var obj={
+						id: user._id,
+						label: user.title
+					};
+					result.push(obj);
+				})
+			}
+			res.jsonp(result);
+		}
+		else{
+			(e)=>{console.log(e)}
+		}
+	});
+})
+
+
+app.get("/watch/:id", (req, res)=>{
+	var find_all_data= async function(){
+		var id= req.params.id;
+		try{
+			var vidoe_data= await streamdata.findOne({_id: id});
+			var details= await streamData_image.findOne({_id: id});
+			var src= vidoe_data.video
+			var title= details.title
+			var des= details.des;
+			var poster= details.image;
+			var ext_name =path.extname(src);
+			var e= ext_name.split(".")
+			var ext= e[1]
+
+			res.render("video", {src: src, title: title,
+			 des: des, ext: ext, poster: poster});
+
+			var videopath= __dirname+"/public/video/"+src
+
+			server.on("request", (req, res)=>{
+				var stream= fs.createReadStream(videopath);
+				res.pipe(stream);
+			})
+		}catch{
+			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
+		}
+
+	};
+	find_all_data();
+})
+
+
+
+
 
 var Storage_video= multer.diskStorage({
 	destination: function(req, file, cb){
@@ -85,21 +269,20 @@ var Storage_image= multer.diskStorage({
 var upload_image= multer({storage: Storage_image}).single("file")
 
 app.post("/upload_details",upload_image,((req, res)=>{
-	console.log(req.body);
-	console.log(req.file);
 	var u_details = async function(){
 		try{
 		var stream_details= new streamData_image({
 		_id: req.body.id,
 		image: req.file.filename,
 		title: req.body.title,
-		des: req.body.description,
 		choose: req.body.choose,
-		language: req.body.language
+		cate: req.body.categories,
+		language: req.body.language,
+		des: req.body.description
 	})
 
 	var s_details= await stream_details.save();
-	res.render("upload")
+	res.render("contact")
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
@@ -107,145 +290,4 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	};
 	u_details();
 }))
-
-app.get("/", (req, res)=>{
-
-	var main= async function(){
-		var find_data= await streamData_image.find({});
-		var data= find_data;
-		res.render("index", {details: data})
-	};
-	main();
-});
-
-app.get("/watch/:id", (req, res)=>{
-	var find_all_data= async function(){
-		var id= req.params.id;
-		try{
-			var vidoe_data= await streamdata.findOne({_id: id});
-			var details= await streamData_image.findOne({_id: id});
-			var src= vidoe_data.video
-			var title= details.title
-			var des= details.des;
-			var poster= details.image;
-			var ext_name =path.extname(src);
-			var e= ext_name.split(".")
-			var ext= e[1]
-
-			res.render("video", {src: src, title: title,
-			 des: des, ext: ext, poster: poster});
-
-			//STREAM FUNCTION
-			var range= req.headers.range
-			// if(!range){
-			// 	res.status(400).send("ERROR IN STREAMING")
-			// }
-			var videopath= src
-			var videosize= fs.statSync(src).size
-
-			//PARSE RANGE
-			//Example: "bytes=32324-"
-
-			var chunksize= 10**6;
-			var start = Number(range.replace(/\D/g, ""))
-			var end= Math.min(start + chunksize, videosize - 1)
-
-			var contentlength= end - start + 1;
-			var headers={
-				"Content-Range": `bytes ${start}-${end}/${videosize}`,
-				"Accept-Range": "bytes",
-				"Content-Length": contentlength,
-				"Content-Type": `video/${ext}`
-			};
-
-			res.writeHead(206, headers);
-
-			var videoStream= fs.createReadStream(videopath, {start, end});
-
-			videoStream.pipe(res);
-		}catch{
-			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
-		}
-
-	};
-	find_all_data();
-})
-
-app.get("/movie", (req, res)=>{
-	var find= async function(){
-		try{
-			var data= await streamData_image.find({choose: "movie"})
-			console.log(data)
-			res.render("index", {details: data})
-			
-		}
-		catch{
-			(e)=>{console.log(e)}
-		}
-	};
-	find();
-})
-
-app.get("/tv-show", (req, res)=>{
-	var find= async function(){
-		try{
-			var data= await streamData_image.find({choose: "tv-show"})
-			console.log(data)
-			res.render("index", {details: data})
-			
-		}
-		catch{
-			(e)=>{console.log(e)}
-		}
-	};
-	find();
-})
-
-app.get("/web-series", (req, res)=>{
-	var find= async function(){
-		try{
-			var data= await streamData_image.find({choose: "web-series"})
-			console.log(data)
-			res.render("index", {details: data})
-			
-		}
-		catch{
-			(e)=>{console.log(e)}
-		}
-	};
-	find();
-})
-
-
-app.get("/search", (req, res)=>{
-	var f= async function(){
-		try{
-		var query= req.query.search;
-		var q= query.toLowerCase();
-		var data= await streamData_image.find({});
-		var alldata= data.image;
-		console.log(alldata);
-		var data_title= await streamData_image.find({title: q})
-
-		if(data_title!==""){
-			res.render("index", {details: data_title})
-		}
-
-		}catch{
-			res.send("SOME ERROR IS OCCURED")
-		}
-		
-	};
-	f();
-})
-
-
-
-
-
-
-
-
-
-
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})

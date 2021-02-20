@@ -8,7 +8,7 @@
 	background-color: black;
 }
 .nav>a{
-	color: red;
+	color: rgb(0, 171, 244);;
 	display: inline-block;
 	font-size: 4vw;
 	font-family: "AGENCY FB";
@@ -19,7 +19,7 @@
 }
 .nav>ul{
 	display: inline-block;
-	width: 30vw;
+	width: 35vw;
 	margin: -2%;
 }
 .nav>ul>li{
@@ -30,7 +30,7 @@
 	text-decoration: none;
 	color: white;
 	font-family: "AGENCY FB";
-	font-size: 1.9vw;
+	font-size: 1.5vw;
 	font-weight: bold;
 	transition: all .2s ease-in;
 }
@@ -43,25 +43,28 @@
 	color: rgb(0, 171, 244);
 	transform: scale(1.4);
 }
-.nav>.search{
+.area{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 5%;
+}
+.search{
 	position: relative;
 	display: inline-block;
-	float: right;
-	top: -2.5rem;
-	right: 2%;
 }
 
 .text{
-	width: 25vw;
-	height: 2rem;
+	width: 70vw;
+	height: 1.5rem;
 }
 
 .btn{
-	height: 2rem;
-	width: 8vw;
+	height: 1.5rem;
+	width: 12vw;
 	color: white;
 	font-size: .8rem;
-	background-color: red;
+	background-color:rgb(0, 171, 244);;
 	border: none;
 	margin: auto;
 	cursor: pointer;

@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>NETFLIX</title>
 
     <link rel="stylesheet" href="../css/nav.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
 </head>
 <body>
 
 	{{>nav}}
+	{{>search}}
 
+	
 	<div class="main">
 
-
-
-		{{#each details}}
+		<div class="div">
+			<h1>MOVIES</h1>
+		</div>
+		<div class="div_content">
+		{{#each movie}}
 		<div class="content" >
 			<a href="/watch/{{this.id}}" class="link">
 				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
@@ -24,7 +31,48 @@
 			</a>
 		</div>
 		{{/each}}
+	</div>
+
+	<div class="div">
+			<h1>WEB-SERIES</h1>
+	</div>
+
+	<div class="div_content">
+		{{#each web}}
+		<div class="content" >
+			<a href="/watch/{{this.id}}" class="link">
+				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
+				<p class="title">{{this.title}}</p>
+			</a>
+		</div>
+		{{/each}}
+	</div>
+
+	<div class="div">
+			<h1>TV-SHOWS</h1>
+	</div>
+
+	<div class="div_content">
+		{{#each tv}}
+		<div class="content" >
+			<a href="/watch/{{this.id}}" class="link">
+				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
+				<p class="title">{{this.title}}</p>
+			</a>
+		</div>
+		{{/each}}
+	</div>
+
+
 
 	</div>
+
+
+	{{>footer}}
+
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <script type="text/javascript" src="../js/autocomplete.js"></script>
 </body>
 </html>
