@@ -13,7 +13,7 @@ var http=require("http");
 var server= http.createServer();
 var mailer= require("nodemailer");
 var autocomplete= require("autocompleter");
-
+var stream_data = require("data.js")
 
 try{
 app.use(express.json());
@@ -31,7 +31,9 @@ hbs.registerPartials(partials_path);
 
 
 app.get("/", (req, res)=>{
-	var main= async function(){res.render("index")
+	var main= async function(){
+		var data = await stream_data.find({})
+		res.render("index", {name: data})
 	};
 	main();
 });
