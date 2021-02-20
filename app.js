@@ -31,7 +31,6 @@ hbs.registerPartials(partials_path);
 
 app.get("/", (req, res)=>{
 	var main= async function(){
-		var data = await stream_data.find({})
 		res.render("index")
 	};
 	main();
