@@ -1,5 +1,5 @@
 var mongoose= require("mongoose")
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/streamdata", {
+mongoose.connect("mongodb://localhost:27017/streamdata", {
 	useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
