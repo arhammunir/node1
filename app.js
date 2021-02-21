@@ -5,6 +5,7 @@ var hbs= require("hbs");
 var path= require("path");
 var fs= require("fs");
 var multer=  require("multer");
+var {streamdata, streamData_image}= require("./data.js");
 var port= process.env.PORT || 2000;
 var t_dir= path.join(__dirname, "./public/views");
 var static_path= path.join(__dirname, "./public/");
@@ -13,7 +14,7 @@ var http=require("http");
 var server= http.createServer();
 var mailer= require("nodemailer");
 var autocomplete= require("autocompleter");
-var {streamdata, streamData_image}= require("./data.js");
+
 
 try{
 app.use(express.json());
@@ -28,7 +29,6 @@ app.use(express.static(__dirname+"/public/"));
 app.set("view engine", "hbs")
 app.set("views", t_dir);
 hbs.registerPartials(partials_path);
-
 
 
 app.get("/", (req, res)=>{
@@ -46,9 +46,173 @@ app.get("/", (req, res)=>{
 });
 
 
+
+app.get("/movie", (req, res)=>{
+	var find= async function(){
+		try{
+			var data= await streamData_image.find({choose: "movie"})
+			res.render("specific", {details: data})	
+		}
+		catch{
+			(e)=>{console.log(e)}
+		}
+	};
+	find();
+})
+
+
+
+app.get("/tv-show", (req, res)=>{
+	var find= async function(){
+		try{
+			var data= await streamData_image.find({choose: "tv-show"})
+			res.render("specific", {details: data})
+		}
+		catch{
+			(e)=>{console.log(e)}
+		}
+	};
+	find();
+})
+
+
+
+app.get("/web-series", (req, res)=>{
+	var find= async function(){
+		try{
+			var data= await streamData_image.find({choose: "web-series"})
+			res.render("specific", {details: data})
+		}
+		catch{
+			(e)=>{console.log(e)}
+		}
+	};
+	find();
+})
+
+
 app.get("/upload", (req, res)=>{
 	res.render("upload")
 })
+
+
+
+app.get("/about", (req, res)=>{
+	res.render("about")
+})
+
+
+
+app.get("/contact/:message", (req, res)=>{
+	res.render("contact", {sub: req.params.message})
+})
+
+
+app.post("/contact", (req, res)=>{
+	var transporter= mailer.createTransport({
+		service: "gmail",
+		auth: {
+			user:process.env.EMAIL,
+			pass:process.env.PASS
+		}
+	});
+	var body={
+		from:req.body.email,
+		to:process.env.EMAIL,
+		subject: req.body.message,
+		html: `<p>req.body.input_message</p>`
+	}
+	transporter.sendMail(body, (err, result)=>{
+		if(err){
+			return(err)
+		}
+		else{
+			console.log("MESSAGE SENT SUCCESSFULLY");
+		}
+	})
+	res.render("contact")
+})
+
+
+
+app.get("/search", (req, res)=>{
+	var f= async function(){
+		try{
+		var query= req.query.search;
+		var q= query.toLowerCase();
+		var data_title= await streamData_image.find({title: {$regex: q}})
+		res.render("search", {search: data_title})
+
+		}catch{
+			(e)=>{console.log(e)}
+			res.send("SOME ERROR IS OCCURED")
+		}
+		
+	};
+	f();
+})
+
+
+
+app.get("/autocomplete", (req, res)=>{
+
+	var regex = new RegExp(req.query["term"], 'i');
+	var db_data = streamData_image.find({title: {$regex: regex}}).limit(10);
+
+	db_data.exec(function(err, data){
+		var result = [];
+		if(!err){
+			if(data && data.length && data.length>0){
+				data.forEach(user=>{
+					var obj={
+						id: user._id,
+						label: user.title
+					};
+					result.push(obj);
+				})
+			}
+			res.jsonp(result);
+		}
+		else{
+			(e)=>{console.log(e)}
+		}
+	});
+})
+
+
+app.get("/watch/:id", (req, res)=>{
+	var find_all_data= async function(){
+		var id= req.params.id;
+		try{
+			var vidoe_data= await streamdata.findOne({_id: id});
+			var details= await streamData_image.findOne({_id: id});
+			var src= vidoe_data.video
+			var title= details.title
+			var des= details.des;
+			var poster= details.image;
+			var ext_name =path.extname(src);
+			var e= ext_name.split(".")
+			var ext= e[1]
+
+			res.render("video", {src: src, title: title,
+			 des: des, ext: ext, poster: poster});
+
+			var videopath= __dirname+"/public/video/"+src
+
+			server.on("request", (req, res)=>{
+				var stream= fs.createReadStream(videopath);
+				res.pipe(stream);
+			})
+		}catch{
+			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
+		}
+
+	};
+	find_all_data();
+})
+
+
+
 
 
 var Storage_video= multer.diskStorage({
@@ -118,7 +282,7 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	})
 
 	var s_details= await stream_details.save();
-	res.end();
+	res.render("contact")
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
@@ -126,9 +290,4 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	};
 	u_details();
 }))
-
-
-
-
-
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})
