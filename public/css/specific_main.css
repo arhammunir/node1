@@ -68,15 +68,12 @@ body{
 	.content{
 		width: 90vw;
 		height: auto;
-		margin: 1% auto;
+		margin: 1% 2.5%;
 	}
 	.img{
 		width: 80%;
 		margin-left: 10%;
-		height: 15vh;
+		height: 18vh;
 	}
 }
 
-h1{
-	color: white;
-}

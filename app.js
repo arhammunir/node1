@@ -157,7 +157,7 @@ app.get("/search", (req, res)=>{
 app.get("/autocomplete", (req, res)=>{
 
 	var regex = new RegExp(req.query["term"], 'i');
-	var db_data = streamData_image.find({title: {$regex: regex}}).limit(10);
+	var db_data = streamData_image.find({title: {$regex: regex}}).limit(6);
 
 	db_data.exec(function(err, data){
 		var result = [];

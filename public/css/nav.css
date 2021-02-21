@@ -19,7 +19,7 @@
 }
 .nav>ul{
 	display: inline-block;
-	width: 35vw;
+	width: 40vw;
 	margin: -2%;
 }
 .nav>ul>li{
@@ -30,7 +30,7 @@
 	text-decoration: none;
 	color: white;
 	font-family: "AGENCY FB";
-	font-size: 1.5vw;
+	font-size: 1.6vw;
 	font-weight: bold;
 	transition: all .2s ease-in;
 }
@@ -56,11 +56,11 @@
 
 .text{
 	width: 70vw;
-	height: 1.5rem;
+	height: 2rem;
 }
 
 .btn{
-	height: 1.5rem;
+	height: 2rem;
 	width: 12vw;
 	color: white;
 	font-size: .8rem;
@@ -71,4 +71,13 @@
 }
 .demand{
 	color: rgb(0, 171, 244);
+}
+
+@media screen and (max-width: 500px){
+	.btn{
+		display: none;
+	}
+	.text{
+		width: 90vw;
+	}
 }
