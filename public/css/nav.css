@@ -8,7 +8,7 @@
 	background-color: black;
 }
 .nav>a{
-	color: rgb(0, 171, 244);;
+	color: rgb(0, 171, 244);
 	display: inline-block;
 	font-size: 4vw;
 	font-family: "AGENCY FB";
@@ -74,6 +74,12 @@
 }
 
 @media screen and (max-width: 500px){
+	.nav>ul{
+		width: 50vw;
+	}
+	.nav>ul>li>a{
+		font-size: 1.5vw;
+	}
 	.btn{
 		display: none;
 	}

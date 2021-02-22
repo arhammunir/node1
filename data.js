@@ -1,5 +1,5 @@
 var mongoose= require("mongoose")
-mongoose.connect("mongodb+srv://stream:nodejswebproject_p1@cluster0.gayms.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://stream:nodejswebproject_p1@cluster0.gayms.mongodb.net/myFirstDatabase?retryWrites=true&w=majorit", {
 	useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

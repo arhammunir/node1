@@ -112,13 +112,13 @@ app.post("/contact", (req, res)=>{
 	var transporter= mailer.createTransport({
 		service: "gmail",
 		auth: {
-			user:process.env.EMAIL,
-			pass:process.env.PASS
+			user:"nodejswebproject1@gmail.com",
+			pass:"nodejswebproject_p1"
 		}
 	});
 	var body={
 		from:req.body.email,
-		to:process.env.EMAIL,
+		to:"nodejswebproject1@gmail.com",
 		subject: req.body.message,
 		html: `<p>req.body.input_message</p>`
 	}
@@ -130,7 +130,7 @@ app.post("/contact", (req, res)=>{
 			console.log("MESSAGE SENT SUCCESSFULLY");
 		}
 	})
-	res.render("contact")
+	res.redirect("/");
 })
 
 
@@ -157,7 +157,7 @@ app.get("/search", (req, res)=>{
 app.get("/autocomplete", (req, res)=>{
 
 	var regex = new RegExp(req.query["term"], 'i');
-	var db_data = streamData_image.find({title: {$regex: regex}}).limit(6);
+	var db_data = streamData_image.find({title: {$regex: regex}}).limit(10);
 
 	db_data.exec(function(err, data){
 		var result = [];
@@ -229,11 +229,13 @@ var upload_video= multer({storage: Storage_video}).single("file")
 app.post("/uploadfile", upload_video ,(req, res)=>{
  var u_video= async function(){
  	try{
+ 		console.log(req.file.filename)
 	var video_stream_data= new streamdata({
 		video: req.file.filename
 	})
+	console.log("VIDEO IS" + video_stream_data)
+	res.render("detail", {id: video_stream_data._id});
 	var data = await video_stream_data.save();
-	res.render("detail", {id: data._id})
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -280,14 +282,19 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		language: req.body.language,
 		des: req.body.description
 	})
-
+	res.redirect("/")		
 	var s_details= await stream_details.save();
-	res.render("contact")
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
 		}
 	};
 	u_details();
-}))
+}));
+
+app.get("*",(req, res)=>{
+	res.render("404");
+});
+
+
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})
