@@ -229,13 +229,12 @@ var upload_video= multer({storage: Storage_video}).single("file")
 app.post("/uploadfile", upload_video ,(req, res)=>{
  var u_video= async function(){
  	try{
- 		console.log(req.file.filename)
 	var video_stream_data= new streamdata({
 		video: req.file.filename
 	})
-	console.log("VIDEO IS" + video_stream_data)
 	res.render("detail", {id: video_stream_data._id});
 	var data = await video_stream_data.save();
+	res.render("detail", {id: video_stream_data._id});
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -281,9 +280,10 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		cate: req.body.categories,
 		language: req.body.language,
 		des: req.body.description
-	})
-	res.redirect("/")		
+	});
+		
 	var s_details= await stream_details.save();
+	res.redirect("/")	
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
