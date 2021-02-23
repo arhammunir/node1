@@ -280,10 +280,9 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		cate: req.body.categories,
 		language: req.body.language,
 		des: req.body.description
-	});
-		
+	})
 	var s_details= await stream_details.save();
-	res.redirect("/")	
+	res.render("index");	
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
@@ -292,9 +291,9 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	u_details();
 }));
 
-app.get("*",(req, res)=>{
-	res.render("404");
-});
+// app.get("*",(req, res)=>{
+// 	res.render("404");
+// });
 
 
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})
