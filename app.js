@@ -1,3 +1,6 @@
+"use strict"
+
+
 var express= require("express");
 var app= express();
 var bodyParser= require("body-parser");
@@ -181,12 +184,14 @@ app.get("/autocomplete", (req, res)=>{
 
 
 app.get("/watch/:id", (req, res)=>{
+	var id =req.params.id
+	console.log("ID IS " + id)
 	var find_all_data= async function(){
-		var id= req.params.id;
 		try{
 			var vidoe_data= await streamdata.findOne({_id: id});
 			var details= await streamData_image.findOne({_id: id});
 			var src= vidoe_data.video
+			console.log(vidoe_data + details);
 			var title= details.title
 			var des= details.des;
 			var poster= details.image;
@@ -203,11 +208,13 @@ app.get("/watch/:id", (req, res)=>{
 				var stream= fs.createReadStream(videopath);
 				res.pipe(stream);
 			})
-		}catch{
+		}
+		catch{
 			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
 		}
 
 	};
+
 	find_all_data();
 })
 
@@ -226,15 +233,15 @@ var Storage_video= multer.diskStorage({
 
 var upload_video= multer({storage: Storage_video}).single("file")
 
-app.post("/uploadfile", upload_video ,(req, res)=>{
+app.post("/uploadfile", upload_video , (req, res)=>{
  var u_video= async function(){
  	try{
 	var video_stream_data= new streamdata({
 		video: req.file.filename
-	});
-	res.render("detail", {id: data._id});
-	var data = await video_stream_data.save();
-	res.render("detail", {id: data._id});
+	})
+	res.render("detail", {id : video_stream_data._id}).headers("201");
+	await video_stream_data.save();
+	res.render("detail", {id : video_stream_data._id}).headers("201");
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -281,10 +288,9 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		language: req.body.language,
 		des: req.body.description
 	});
-		
-	res.render("contact");
+	res.redirect("/");
 	var s_details= await stream_details.save();
-	res.render("contact");
+	res.redirect("/").headers("200");
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
@@ -293,8 +299,6 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	u_details();
 }));
 
-app.get("*",(req, res)=>{
-	res.render("404");
-});
+
 
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})
