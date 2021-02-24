@@ -231,9 +231,10 @@ app.post("/uploadfile", upload_video ,(req, res)=>{
  	try{
 	var video_stream_data= new streamdata({
 		video: req.file.filename
-	})
+	});
+	res.render("detail", {id: data._id});
 	var data = await video_stream_data.save();
-	res.render("detail", {id: data._id})
+	res.render("detail", {id: data._id});
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -279,10 +280,11 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		cate: req.body.categories,
 		language: req.body.language,
 		des: req.body.description
-	})
-
+	});
+		
+	res.render("contact");
 	var s_details= await stream_details.save();
-	res.render("contact")
+	res.render("contact");
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
