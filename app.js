@@ -184,14 +184,12 @@ app.get("/autocomplete", (req, res)=>{
 
 
 app.get("/watch/:id", (req, res)=>{
-	var id =req.params.id
-	console.log("ID IS " + id)
+	var id =req.params.id;
 	var find_all_data= async function(){
 		try{
-			var vidoe_data= await streamdata.findOne({_id: id});
-			var details= await streamData_image.findOne({_id: id});
+			var vidoe_data= await streamdata.findById({_id: id});
+			var details= await streamData_image.findById({_id: id});
 			var src= vidoe_data.video
-			console.log(vidoe_data + details);
 			var title= details.title
 			var des= details.des;
 			var poster= details.image;
@@ -239,9 +237,10 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 	var video_stream_data= new streamdata({
 		video: req.file.filename
 	})
-	res.render("detail", {id : video_stream_data._id}).headers("201");
-	await video_stream_data.save();
-	res.render("detail", {id : video_stream_data._id}).headers("201");
+	var id= video_stream_data._id;
+	res.render("detail", {id : id});
+	var data = await video_stream_data.save();
+	res.redirect("/");
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -275,6 +274,7 @@ var Storage_image= multer.diskStorage({
 })
 
 var upload_image= multer({storage: Storage_image}).single("file")
+
 
 app.post("/upload_details",upload_image,((req, res)=>{
 	var u_details = async function(){
