@@ -18,11 +18,11 @@
 
 		<div class="div">
 
-		<h1 style="color: white;"><span style="color: rgb(0, 171, 244); font-size: 4vw">{{search.length}}</span> Result Found</h1>
-		
-		<div class="div_content">
+
+	<h1 style="color: white;">{{search.length}} Result Found</h1>
+	
 		{{#each search}}
-		<div class="content">
+		<div class="content" >
 			<a href="/watch/{{this.id}}" class="link">
 				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
 				<p class="title">{{this.title}}</p>
@@ -30,7 +30,9 @@
 		</div>
 		{{/each}}
 
-	</div>
+
+
+
 
 	</div>
 

@@ -47,7 +47,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 5%;
+	margin-top: 3%;
 }
 .search{
 	position: relative;
@@ -86,4 +86,42 @@
 	.text{
 		width: 90vw;
 	}
+	.nav{
+		height: 7vh;
+	}
+	.nav>a{
+		font-size: 5vw;
+	}
+	.nav>ul>li>a{
+		font-size: 2vw;
+	}
+
+}
+
+@media screen and (max-width: 500px){
+	.nav>ul{
+		width: 60vw;
+	}
+	.nav>ul>li>a{
+		font-size: 1.5vw;
+	}
+	.btn{
+		display: none;
+	}
+	.text{
+		width: 90vw;
+	}
+	.nav{
+		height: 6vh;
+	}
+	.nav>a{
+		font-size: 7vw;
+	}
+	.nav>ul>li>a{
+		font-size: 3vw;
+	}
+	.demand{
+		font-size: 2.5vw;
+	}
+
 }

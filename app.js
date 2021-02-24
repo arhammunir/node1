@@ -112,13 +112,13 @@ app.post("/contact", (req, res)=>{
 	var transporter= mailer.createTransport({
 		service: "gmail",
 		auth: {
-			user:"nodejswebproject1@gmail.com",
-			pass:"nodejswebproject_p1"
+			user:process.env.EMAIL,
+			pass:process.env.PASS
 		}
 	});
 	var body={
 		from:req.body.email,
-		to:"nodejswebproject1@gmail.com",
+		to:process.env.EMAIL,
 		subject: req.body.message,
 		html: `<p>req.body.input_message</p>`
 	}
@@ -130,7 +130,7 @@ app.post("/contact", (req, res)=>{
 			console.log("MESSAGE SENT SUCCESSFULLY");
 		}
 	})
-	res.redirect("/");
+	res.render("contact")
 })
 
 
@@ -155,11 +155,11 @@ app.get("/search", (req, res)=>{
 
 
 app.get("/autocomplete", (req, res)=>{
-
 	var regex = new RegExp(req.query["term"], 'i');
-	var db_data = streamData_image.find({title: {$regex: regex}}).limit(10);
-
+	var db_data = streamData_image.find({title: {$regex: regex}}).limit(6);
+	console.log("DB DATA IS"  +  db_data)
 	db_data.exec(function(err, data){
+		console.log("RESULT DATA IS" + data)
 		var result = [];
 		if(!err){
 			if(data && data.length && data.length>0){
@@ -232,9 +232,8 @@ app.post("/uploadfile", upload_video ,(req, res)=>{
 	var video_stream_data= new streamdata({
 		video: req.file.filename
 	})
-	res.render("detail", {id: video_stream_data._id});
 	var data = await video_stream_data.save();
-	res.render("detail", {id: video_stream_data._id});
+	res.render("detail", {id: data._id})
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -281,8 +280,9 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		language: req.body.language,
 		des: req.body.description
 	})
+
 	var s_details= await stream_details.save();
-	res.render("index");	
+	res.render("contact")
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
@@ -291,9 +291,8 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	u_details();
 }));
 
-// app.get("*",(req, res)=>{
-// 	res.render("404");
-// });
-
+app.get("*",(req, res)=>{
+	res.render("404");
+});
 
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})

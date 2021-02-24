@@ -12,7 +12,7 @@ body{
 	margin: 5% auto;
 }
 .div>h1{
-	font-size: 3vw;
+	font-size: 4vw;
 	font-family: "AGENCY FB";
 	margin-left: 1vw;
 }
@@ -26,11 +26,10 @@ body{
 	align-items: center;
 }
 .content{
-
 	display: inline-block;
 	width: 180px;
 	height: 180px;
-	margin: .5% 1%;
+	margin: .5% .8%;
 	transition: all .2s ease;
 	background-color:  black;
 	border: 2px solid rgb(45, 45, 45);
@@ -69,9 +68,13 @@ body{
 		width: 90vw;
 		height: auto;
 		margin: 2% auto;
+		border: 1px solid rgb(45, 45, 45);
 	}
 	.img{
 		height: 20vh;
+	}
+	.div>h1{
+		font-size: 5vw;
 	}
 }
 

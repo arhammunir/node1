@@ -3,7 +3,7 @@ mongoose.connect("mongodb+srv://stream:nodejswebproject_p1@cluster0.gayms.mongod
 	useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false,
+    useFindAndModify: false
 }).then(console.log("DATABASE CONNECTED SUCCESSFULLY"))
 .catch( (e)=>{console.log("DATABASE ERROR IS" + e)})
 
