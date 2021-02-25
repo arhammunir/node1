@@ -21,7 +21,7 @@ var autocomplete= require("autocompleter");
 
 try{
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
 }catch{
@@ -239,7 +239,7 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 	})
 	var id= video_stream_data._id;
 	var data = await video_stream_data.save();
-	res.redirect("/details/"+id);
+	res.redirect("/");
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
