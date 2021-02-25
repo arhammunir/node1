@@ -238,7 +238,6 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 		video: req.file.filename
 	})
 	var id= video_stream_data._id;
-	res.render("detail", {id : id});
 	var data = await video_stream_data.save();
 	res.redirect("/details/"+id);
  	}catch{
