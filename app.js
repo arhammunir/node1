@@ -21,9 +21,9 @@ var autocomplete= require("autocompleter");
 
 try{
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 }catch{
 	(e)=>{console.log(`READ ERROR IS ${e}`)}
 }
@@ -240,7 +240,7 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 	var id= video_stream_data._id;
 	res.render("detail", {id : id});
 	var data = await video_stream_data.save();
-	res.redirect("/");
+	res.redirect("/details/"+id);
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
@@ -275,6 +275,10 @@ var Storage_image= multer.diskStorage({
 
 var upload_image= multer({storage: Storage_image}).single("file")
 
+app.get("/details/:id", (req, res)=>{
+	console.log(req.params.id)
+	res.redirect("/")
+})
 
 app.post("/upload_details",upload_image,((req, res)=>{
 	var u_details = async function(){
