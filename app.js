@@ -238,9 +238,9 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 		video: req.file.filename
 	})
 	var id= video_stream_data._id;
-	res.render("detail", {id: id});
+	res.send("UPLOADED 1");
 	var data = await video_stream_data.save();
-	res.redirect("/");
+	re.send("UPLOADED 2")
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
