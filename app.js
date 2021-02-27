@@ -23,7 +23,7 @@ try{
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 }catch{
 	(e)=>{console.log(`READ ERROR IS ${e}`)}
 }
@@ -238,9 +238,14 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 		video: req.file.filename
 	})
 	var id= video_stream_data._id;
-	res.send("UPLOADED 1");
 	var data = await video_stream_data.save();
-	re.send("UPLOADED 2")
+	if(e){
+		res.send("EROORR" + e)
+	}
+	else{
+		res.redirect("/")
+	}
+
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
