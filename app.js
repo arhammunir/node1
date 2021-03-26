@@ -1,5 +1,6 @@
 "use strict"
 
+var favicon = require('serve-favicon');
 
 var express= require("express");
 var app= express();
@@ -23,11 +24,11 @@ try{
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 }catch{
 	(e)=>{console.log(`READ ERROR IS ${e}`)}
 }
-
+app.use(favicon(path.join(__dirname, '/public/', 'views/img/favicon.png')));
 app.use(express.static(__dirname+"/public/"));
 app.set("view engine", "hbs")
 app.set("views", t_dir);
@@ -43,6 +44,12 @@ app.get("/", (req, res)=>{
 			movie: movie_data,
 			web: web_series,
 			tv: tv_show
+			})
+
+
+			server.on("request", (req, res)=>{
+				var stream= fs.createReadStream("./public/views/index");
+				res.pipe(stream);
 			})
 	};
 	main();
@@ -144,11 +151,14 @@ app.get("/search", (req, res)=>{
 		var query= req.query.search;
 		var q= query.toLowerCase();
 		var data_title= await streamData_image.find({title: {$regex: q}})
-		res.render("search", {search: data_title})
+		var data_des = await streamData_image.find({des: {$regex: q}})
+		res.render("search", {search_1: data_title, search_2:  data_des})
 
 		}catch{
-			(e)=>{console.log(e)}
-			res.send("SOME ERROR IS OCCURED")
+			(e)=>{
+				console.log(e);
+				res.send("SOME ERROR IS OCCURED" + e)
+			}
 		}
 		
 	};
@@ -160,9 +170,7 @@ app.get("/search", (req, res)=>{
 app.get("/autocomplete", (req, res)=>{
 	var regex = new RegExp(req.query["term"], 'i');
 	var db_data = streamData_image.find({title: {$regex: regex}}).limit(6);
-	console.log("DB DATA IS"  +  db_data)
 	db_data.exec(function(err, data){
-		console.log("RESULT DATA IS" + data)
 		var result = [];
 		if(!err){
 			if(data && data.length && data.length>0){
@@ -238,14 +246,11 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 		video: req.file.filename
 	})
 	var id= video_stream_data._id;
-	var data = await video_stream_data.save();
-	if(e){
-		res.send("EROORR" + e)
-	}
-	else{
-		res.redirect("/")
-	}
-
+	var data = await video_stream_data.save(function(err, res){
+		if(err){console.log(err)}
+		else{console.log(res)}
+	});
+	res.render("detail", {id: id});
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}

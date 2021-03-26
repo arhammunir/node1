@@ -21,7 +21,16 @@
 
 	<h1 style="color: white;">{{search.length}} Result Found</h1>
 	
-		{{#each search}}
+		{{#each search_1}}
+		<div class="content" >
+			<a href="/watch/{{this.id}}" class="link">
+				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
+				<p class="title">{{this.title}}</p>
+			</a>
+		</div>
+		{{/each}}
+
+		{{#each search_2}}
 		<div class="content" >
 			<a href="/watch/{{this.id}}" class="link">
 				<img src="/poster/{{this.image}}" alt="MOVIES" class="img">
