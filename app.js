@@ -303,7 +303,7 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		des: req.body.description
 	});
 	res.redirect("/");
-	var s_details= await stream_details.save();
+	var s_details= await stream_details.save(function(err, res){if(err){console.log(err)} else{console.log(res)}});
 	res.redirect("/").headers("200");
 
 		}catch{
