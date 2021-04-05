@@ -204,16 +204,6 @@ app.get("/watch/:id", (req, res)=>{
 			var ext_name =path.extname(src);
 			var e= ext_name.split(".")
 			var ext= e[1]
-
-			res.render("video", {src: src, title: title,
-			 des: des, ext: ext, poster: poster});
-
-			var videopath= __dirname+"/public/video/"+src
-
-			server.on("request", (req, res)=>{
-				var stream= fs.createReadStream(videopath);
-				res.pipe(stream);
-			})
 		}
 		catch{
 			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
@@ -222,6 +212,16 @@ app.get("/watch/:id", (req, res)=>{
 	};
 
 	find_all_data();
+
+	res.render("video", {src: src, title: title,
+			 des: des, ext: ext, poster: poster});
+
+			var videopath= __dirname+"/public/video/"+src
+
+			server.on("request", (req, res)=>{
+				var stream= fs.createReadStream(videopath);
+				res.pipe(stream);
+			})
 })
 
 
@@ -250,12 +250,13 @@ app.post("/uploadfile", upload_video , (req, res)=>{
 		if(err){console.log(err)}
 		else{console.log(res)}
 	});
-	res.render("detail", {id: id});
  	}catch{
  		(e)=>{console.log(`THE UPLOAD ERROR IS ${e}`)}
  	}
  };
  u_video();
+
+ res.render("detail", {id: id});
 })
 
 try{
@@ -302,15 +303,15 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		language: req.body.language,
 		des: req.body.description
 	});
-	res.redirect("/");
 	var s_details= await stream_details.save(function(err, res){if(err){console.log(err)} else{console.log(res)}});
-	res.redirect("/").headers("200");
+	
 
 		}catch{
 			(e)=>{console.log("THE DETAILS UPLOAD ERROR IS "+ e)}
 		}
 	};
 	u_details();
+	res.rednder("index");
 }));
 
 
