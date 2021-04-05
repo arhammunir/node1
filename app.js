@@ -204,16 +204,8 @@ app.get("/watch/:id", (req, res)=>{
 			var ext_name =path.extname(src);
 			var e= ext_name.split(".")
 			var ext= e[1]
-		}
-		catch{
-			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
-		}
 
-	};
-
-	find_all_data();
-
-	res.render("video", {src: src, title: title,
+			res.render("video", {src: src, title: title,
 			 des: des, ext: ext, poster: poster});
 
 			var videopath= __dirname+"/public/video/"+src
@@ -222,6 +214,14 @@ app.get("/watch/:id", (req, res)=>{
 				var stream= fs.createReadStream(videopath);
 				res.pipe(stream);
 			})
+		}
+		catch{
+			(e)=>{console.log("THE STREAM ERROR IS"+ e)}
+		}
+
+	};
+
+	find_all_data();
 })
 
 
