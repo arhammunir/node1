@@ -122,15 +122,15 @@ app.post("/contact", (req, res)=>{
 	var transporter= mailer.createTransport({
 		service: "gmail",
 		auth: {
-			user:process.env.EMAIL,
-			pass:process.env.PASS
+			user:"nodejswebproject1@gmail.com",
+			pass:"nodejswebproject_p1"
 		}
 	});
 	var body={
 		from:req.body.email,
-		to:process.env.EMAIL,
+		to:"nodejswebproject1@gmail.com",
 		subject: req.body.message,
-		html: `<p>req.body.input_message</p>`
+		html: `<p>${req.body.input_message}</p>`
 	}
 	transporter.sendMail(body, (err, result)=>{
 		if(err){
