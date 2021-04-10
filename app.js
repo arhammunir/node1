@@ -18,7 +18,7 @@ var http=require("http");
 var server= http.createServer();
 var mailer= require("nodemailer");
 var autocomplete= require("autocompleter");
-
+const mkdirp = require('mkdirp');
 
 try{
 app.use(express.json());
@@ -37,6 +37,9 @@ hbs.registerPartials(partials_path);
 
 app.get("/", (req, res)=>{
 	var main= async function(){
+
+	const made = mkdirp.sync(__dirname+"/public")
+	console.log(`made directories, starting with ${made}`)
 		var movie_data= await streamData_image.find({choose: "movie"}).limit(20).sort({date: -1});
 		var web_series= await streamData_image.find({choose: "web-series"}).limit(20).sort({date: -1});
 		var tv_show= await streamData_image.find({choose: "tv-show"}).limit(20).sort({date: -1});
@@ -240,12 +243,13 @@ var Storage_video= multer.diskStorage({
 var upload_video= multer({storage: Storage_video}).single("file")
 
 app.post("/uploadfile", upload_video , (req, res)=>{
+	var id;
  var u_video= async function(){
  	try{
 	var video_stream_data= new streamdata({
 		video: req.file.filename
 	})
-	var id= video_stream_data._id;
+	id= video_stream_data._id;
 	var data = await video_stream_data.save(function(err, res){
 		if(err){console.log(err)}
 		else{console.log(res)}
@@ -311,7 +315,7 @@ app.post("/upload_details",upload_image,((req, res)=>{
 		}
 	};
 	u_details();
-	res.rednder("index");
+	res.redirect("/");
 }));
 
 
