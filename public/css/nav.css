@@ -10,7 +10,7 @@
 .nav>a{
 	color: rgb(0, 171, 244);
 	display: inline-block;
-	font-size: 4vw;
+	font-size: 2rem;
 	font-family: "AGENCY FB";
 	font-weight: bold;
 	margin: .5% 3%;
@@ -47,7 +47,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 3%;
+	margin-top: 5%;
 }
 .search{
 	position: relative;
@@ -69,11 +69,15 @@
 	margin: auto;
 	cursor: pointer;
 }
-.demand{
+.nav>ul>li>.demand{
 	color: rgb(0, 171, 244);
+	font-size: 1rem; 
 }
 
 @media screen and (max-width: 500px){
+	.nav>a>p{
+		font-size: 1.6rem;
+	}
 	.nav>ul{
 		width: 50vw;
 	}
@@ -85,6 +89,7 @@
 	}
 	.text{
 		width: 90vw;
+		height: 1.5rem;
 	}
 	.nav{
 		height: 7vh;
@@ -99,6 +104,9 @@
 }
 
 @media screen and (max-width: 500px){
+	.nav>a>p{
+		font-size: 1.5rem;
+	}
 	.nav>ul{
 		width: 60vw;
 	}
@@ -118,10 +126,10 @@
 		font-size: 7vw;
 	}
 	.nav>ul>li>a{
-		font-size: 3vw;
+		font-size: .4rem;
 	}
-	.demand{
-		font-size: 2.5vw;
+	.nav>ul>li>.demand{
+		font-size: .6rem;
 	}
 
 }

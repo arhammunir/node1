@@ -65,10 +65,12 @@ body{
 
 @media screen and (max-width: 500px){
 	.content{
-		width: 90vw;
+		width: 95vw;
 		height: auto;
 		margin: 2% auto;
 		border: 1px solid rgb(45, 45, 45);
+		border-left: none;
+		border-right: none;
 	}
 	.img{
 		height: 20vh;
