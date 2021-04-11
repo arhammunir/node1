@@ -318,6 +318,9 @@ app.post("/upload_details",upload_image,((req, res)=>{
 	res.redirect("/");
 }));
 
+app.get("*", (req ,res)=>{
+	res.render("404");
+})
 
 
 app.listen(port, ()=>{console.log(`CONNECTION IS CONNECTED AT PORT NO: ${port}`)})
